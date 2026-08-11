@@ -1,0 +1,76 @@
+/* Hero: covers the same 100vh as the video, NO z-index (no stacking context)
+   so the canvas inside can mix-blend-mode: screen against the video backdrop */
+.hero {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: none; /* let JS handle all touch gestures */
+  border-radius: 0;
+}
+
+/* -----------------------------------------------
+   Corner labels
+----------------------------------------------- */
+.corner {
+  position: absolute;
+  font-size: clamp(0.6rem, 1.1vw, 0.75rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffff;
+  mix-blend-mode: difference;
+  line-height: 1.5;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.corner:hover {
+  opacity: 1;
+}
+
+.cornerTopLeft {
+  top: clamp(20px, 3.5vw, 40px);
+  left: clamp(20px, 3.5vw, 40px);
+}
+
+.cornerTopRight {
+  top: clamp(20px, 3.5vw, 40px);
+  right: clamp(20px, 3.5vw, 40px);
+  text-align: right;
+}
+
+.cornerBottomLeft {
+  bottom: clamp(20px, 3.5vw, 40px);
+  left: clamp(20px, 3.5vw, 40px);
+}
+
+/* -----------------------------------------------
+   Brand accent — slash separator
+----------------------------------------------- */
+.slash {
+  color: #ffffff;
+  mix-blend-mode: difference;
+  margin: 0 0.15em;
+}
+
+/* -----------------------------------------------
+   Hero title
+----------------------------------------------- */
+.heroTitle {
+  position: relative;
+  text-align: center;
+  user-select: none;
+}
+
+.heroTitleMain {
+  display: block;
+  font-size: clamp(5rem, 16vw, 12rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  color: #ffffff;
+  mix-blend-mode: difference;
+}

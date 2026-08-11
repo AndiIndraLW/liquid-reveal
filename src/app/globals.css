@@ -1,0 +1,29 @@
+/* -----------------------------------------------
+   Design Tokens
+----------------------------------------------- */
+:root {
+  --color-bg:       #ffffff;
+  --color-primary:  #0F52BA;
+  --color-mid:      #A6C5D7;
+  --color-light:    #000926;
+  --font-main:      var(--font-mulish), 'Mulish', sans-serif;
+}
+
+/* -----------------------------------------------
+   Reset & Base
+----------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  background-color: var(--color-bg);
+  color: var(--color-light);
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
