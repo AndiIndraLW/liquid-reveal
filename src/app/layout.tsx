@@ -11,6 +11,11 @@ const mulish = Mulish({
 export const metadata: Metadata = {
   title: "Liquid Reveal — AndiIndra Playground",
   description: "A visual experiment by AndiIndra. Liquid Reveal is a playground hero showcasing fluid design aesthetics.",
+  icons: {
+    icon: "/assets/favicon.png",
+    shortcut: "/assets/favicon.png",
+    apple: "/assets/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

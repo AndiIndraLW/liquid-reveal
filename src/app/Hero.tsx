@@ -24,7 +24,23 @@ export default function Hero() {
 
       {/* ── Bottom-left label ── */}
       <p className={`${styles.corner} ${styles.cornerBottomLeft}`}>
-        instagram <span className={styles.slash}>/</span> portfolio
+        <a
+          href="https://www.instagram.com/andiindra.dev"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.cornerLink}
+        >
+          instagram
+        </a>
+        <span className={styles.slash}> / </span>
+        <a
+          href="https://www.andiindra.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.cornerLink}
+        >
+          portfolio
+        </a>
       </p>
 
     </section>
