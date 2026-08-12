@@ -1,5 +1,6 @@
 import styles from "./hero.module.css";
 import LiquidEffect from "./LiquidEffect";
+import ExperimentsDropdown from "./ExperimentsDropdown";
 
 export default function Hero() {
   return (
@@ -12,10 +13,8 @@ export default function Hero() {
         andiindra <span className={styles.slash}>//</span> Playground
       </p>
 
-      {/* ── Top-right label ── */}
-      <p className={`${styles.corner} ${styles.cornerTopRight}`}>
-        my other experiments
-      </p>
+      {/* ── Top-right dropdown menu ── */}
+      <ExperimentsDropdown />
 
       {/* ── Centre title ── */}
       <h1 className={styles.heroTitle}>
