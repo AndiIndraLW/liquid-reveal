@@ -433,6 +433,22 @@ export default function GalleryTransitionPage() {
             Transition
           </span>
         </div>
+
+        <p
+          style={{
+            margin: 0,
+            fontSize: '0.85rem',
+            fontWeight: 500,
+            letterSpacing: '0.08em',
+            color: '#000000',
+            transform: isDetailOpen && isAnimating ? 'translateY(15px)' : 'translateY(0)',
+            opacity: isDetailOpen && isAnimating ? 0 : 1,
+            transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease',
+            pointerEvents: 'none',
+          }}
+        >
+          click the image to interact
+        </p>
       </div>
 
       {/* ── Morphing Image Origin Animation (Zero Fade: 9:16 thumbnail -> 16:9 center widescreen) ── */}

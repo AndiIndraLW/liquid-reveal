@@ -40,6 +40,9 @@ export default function ExperimentsDropdown() {
     { name: 'Liquid Reveal', href: '/' },
     { name: 'Image Trail', href: '/image-trail' },
     { name: 'Gallery Transition', href: '/gallery-transition' },
+    { name: 'Project Collection', href: '/project-collection' },
+    { name: '3D Cylindrical', href: '/3d-cylindrical' },
+    { name: 'Scroll Transformation', href: '/scroll-transformation' },
   ];
 
   return (

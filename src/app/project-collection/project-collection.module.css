@@ -1,0 +1,349 @@
+/* ==========================================================================
+   Project Collection — 2D Infinite Canvas with Dynamic Responsive Tiling
+   ========================================================================== */
+
+.pageContainer {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background-color: #ffffff;
+  color: #0d0e12;
+  overflow: hidden;
+  user-select: none;
+  touch-action: none;
+  font-family: var(--font-mulish), system-ui, -apple-system, sans-serif;
+  isolation: isolate;
+}
+
+/* -----------------------------------------------
+   Page Header
+----------------------------------------------- */
+.headerSection {
+  position: relative;
+  z-index: 20;
+  padding-top: clamp(60px, 7vw, 90px);
+  padding-left: clamp(20px, 4vw, 60px);
+  padding-right: clamp(20px, 4vw, 60px);
+  text-align: center;
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.headerSectionHidden {
+  opacity: 0;
+  transform: translateY(-40px);
+}
+
+.headerTitle {
+  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+}
+
+.headerSubtitle {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dragBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  background-color: #f1f5f9;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0f172a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* -----------------------------------------------
+   GPU-Accelerated 2D Infinite Drag Canvas
+----------------------------------------------- */
+.canvasWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  cursor: grab;
+  overflow: hidden;
+  touch-action: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: opacity 0.6s ease, transform 0.75s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.canvasWrapperDragging {
+  cursor: grabbing;
+}
+
+/* Grid Scatter Out Effect */
+.canvasScatterOut {
+  opacity: 0;
+  transform: scale(1.35);
+  pointer-events: none;
+}
+
+.outerTransformContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  will-change: transform;
+  transform: translate3d(-50%, -50%, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.tileBlock {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.gridRow {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+/* -----------------------------------------------
+   16:9 Image Cards — Borderless with Soft Shadow
+----------------------------------------------- */
+.imageCard {
+  flex: 0 0 340px;
+  width: 340px;
+  aspect-ratio: 16 / 9;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #0f172a;
+  border: none;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s ease;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.imageCard:hover {
+  transform: scale(1.05) translate3d(0, 0, 0);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.22);
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.imageCard:hover .cardImage {
+  transform: scale(1.08);
+}
+
+/* -----------------------------------------------
+   Fullscreen Shared Element Overlay & Controls
+----------------------------------------------- */
+.detailBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background-color: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.detailBackdropVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.expandingCard {
+  position: fixed;
+  z-index: 200;
+  overflow: hidden;
+  background-color: #0f172a;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+  transition: all 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: top, left, width, height, transform, border-radius;
+}
+
+.expandingImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.detailHeader {
+  position: fixed;
+  top: clamp(20px, 3.5vw, 40px);
+  right: clamp(20px, 3.5vw, 40px);
+  z-index: 250;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.4s ease 0.35s, transform 0.4s ease 0.35s;
+}
+
+.detailHeaderVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.closeBtn {
+  background: #0f172a;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 30px;
+  padding: 10px 22px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.closeBtn:hover {
+  background: #0284c7;
+  border-color: #38bdf8;
+  transform: scale(1.05);
+  box-shadow: 0 12px 35px rgba(2, 132, 199, 0.35);
+}
+
+.detailBottomBar {
+  position: fixed;
+  bottom: clamp(20px, 3.5vw, 40px);
+  left: clamp(20px, 3.5vw, 40px);
+  right: clamp(20px, 3.5vw, 40px);
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.4s ease 0.35s, transform 0.4s ease 0.35s;
+}
+
+.detailBottomBarVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.navBtn {
+  background: #0f172a;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 30px;
+  padding: 12px 24px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navBtn:hover {
+  background: #0284c7;
+  border-color: #38bdf8;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 35px rgba(2, 132, 199, 0.35);
+}
+
+.metaCenter {
+  text-align: center;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 0 20px;
+}
+
+.metaCounter {
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  color: #0284c7;
+  font-variant-numeric: tabular-nums;
+}
+
+.metaTitle {
+  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* -----------------------------------------------
+   Responsive Breakpoints — Flush Tiling (No Spacing Gaps)
+----------------------------------------------- */
+@media (max-width: 640px) {
+  .tileBlock {
+    gap: 20px;
+  }
+
+  .gridRow {
+    gap: 20px;
+  }
+
+  .imageCard {
+    flex: 0 0 260px;
+    width: 260px;
+  }
+
+  .detailBottomBar {
+    flex-direction: column;
+    gap: 12px;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+  }
+
+  .metaCenter {
+    order: -1;
+  }
+
+  .navBtn {
+    padding: 10px 18px;
+    font-size: 0.65rem;
+    width: 100%;
+    justify-content: center;
+  }
+}

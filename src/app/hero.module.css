@@ -61,6 +61,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  white-space: nowrap;
 }
 
 .dropdownBtn {
@@ -75,6 +76,7 @@
   padding: 4px 0;
   outline: none;
   mix-blend-mode: normal;
+  white-space: nowrap;
 }
 
 .chevron {
